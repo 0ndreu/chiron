@@ -4,6 +4,11 @@
 # run it as root from the checkout on the server:
 #     sudo /opt/chiron/deploy/setup.sh
 #
+# a new server: clone the repo first (root; setup.sh then gives the checkout to hermes):
+#     sudo git clone <this repo's url> /opt/chiron && sudo /opt/chiron/deploy/setup.sh
+# update the server: only from git, never by copying files to it:
+#     sudo -u hermes git -C /opt/chiron pull --ff-only && sudo /opt/chiron/deploy/setup.sh
+#
 # safe to run again (after every deploy, too): each step checks first, or writes the same result again.
 #
 # the steps, in order:
