@@ -50,5 +50,5 @@ Python 3.12, managed with [uv](https://docs.astral.sh/uv/). The data download ne
 
 ## Status
 
-The lab code and its tests are done. Next: the server setup, then picking the models and a week-0 cost measurement,
-then week 1 of the course.
+The lab code, its tests and the server setup are done. Next: picking the models, Telegram and the jobs, and a week-0
+cost measurement, then week 1 of the course.

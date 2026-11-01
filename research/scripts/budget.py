@@ -19,8 +19,8 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-# the one place that knows the state.db schema. the column names are from the docs and our notes, not from a real
-# install: confirm them on the first install (sqlite3 ~/.hermes/state.db .schema) and fix this line if needed.
+# the one place that knows the state.db schema. checked on the first install (Hermes v0.22.5): the sessions table has
+# these columns, and started_at is REAL (unix seconds). check again after a Hermes update.
 SPEND = ("select model, coalesce(actual_cost_usd, estimated_cost_usd), coalesce(input_tokens, 0), coalesce(output_tokens, 0) "
          "from sessions where started_at >= ?")
 
