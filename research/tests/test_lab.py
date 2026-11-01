@@ -55,7 +55,8 @@ def make_root(path, holdout_drift=None):
     pd.DataFrame(100 * np.exp(np.cumsum(drift + noise, axis=0)), index=idx, columns=tickers).to_csv(path / "data/all/prices.csv")
     lab_yaml = (RESEARCH / "lab.yaml").read_text()
     (path / "lab.yaml").write_text(lab_yaml.replace("holdout: null", "holdout: 2026-01-01").replace("week_1: null", "week_1: 2026-07-01"))
-    (path / "ideas.md").write_text("I-001 | testing H | seed | behavioral | Time-series trend | MOP 2012 | checks: orders_per_year > 60\n")
+    (path / "journal").mkdir()
+    (path / "journal/ideas.md").write_text("I-001 | testing H | seed | behavioral | Time-series trend | MOP 2012 | checks: orders_per_year > 60\n")
     return path
 
 
@@ -148,7 +149,7 @@ def test_the_walkthrough_idea_goes_from_the_inbox_to_a_paper_sleeve(root):
     lab.run()
     assert lab.db.execute("select hypothesis from sleeves where retired is null").fetchall() == [(HID,)]
     assert "F-001 | promoted | tries 1/3" in (root / "reports/families.md").read_text()
-    outbox = (root / "journal/outbox.md").read_text().splitlines()
+    outbox = (root / "reports/outbox.md").read_text().splitlines()
     assert f"- 2026-11-06 lab: {HID} promoted: holdout pass, paper sleeve S-1" in outbox  # no numbers, no params
     assert any("H-2026-11-06-trend-again refused" in line and "already used its holdout run" in line for line in outbox)
 
@@ -171,7 +172,7 @@ def test_the_holdout_fails_closed_and_shows_only_pass_or_fail(tmp_path, monkeypa
     lab.run()
     assert statuses(lab) == {HID: "rejected"}
     assert lab.db.execute("select passed from holdout_runs").fetchall() == [(False,)]
-    agent_sees = (root / "journal/outbox.md").read_text() + (root / "reports/families.md").read_text()
+    agent_sees = (root / "reports/outbox.md").read_text() + (root / "reports/families.md").read_text()
     assert f"{HID} rejected: step 6: holdout fail" in agent_sees
     assert "SECRET" not in agent_sees and "sharpe -" not in agent_sees
 
@@ -180,7 +181,7 @@ def test_a_crash_on_the_validation_data_is_refused_without_its_text(root):
     crash = 'print("SECRET", prices.tail(1).to_dict())\n    if prices.index[-1].year >= 2012: raise ValueError("SECRET")'
     submit(root, FIXED.replace("    return weights", "    " + crash + "\n    return weights"))
     Lab(root, dt.date(2026, 11, 4)).run()
-    outbox = (root / "journal/outbox.md").read_text()
+    outbox = (root / "reports/outbox.md").read_text()
     assert f"{HID} refused (not a trial)" in outbox and "SECRET" not in outbox
     assert "SECRET" in (root / "registry/sandbox.log").read_text()  # for the user, on the host
 
@@ -226,7 +227,7 @@ def test_a_refine_stays_in_its_parents_family_and_an_unlike_one_counts_in_n(root
     families = dict(lab.db.execute("select id, family from hypotheses").fetchall())
     assert families == {HID: "F-001", "H-2026-11-05-refine": "F-001", "H-2026-11-05-close": "F-001"}  # one holdout run for all
     assert lab.sharpe_var(3500)[1] == 2  # but the unlike refine counts as its own idea in the DSR's N
-    assert "H-2026-11-05-orphan refused (not a trial): parent H-nope never reached step 4" in (root / "journal/outbox.md").read_text()
+    assert "H-2026-11-05-orphan refused (not a trial): parent H-nope never reached step 4" in (root / "reports/outbox.md").read_text()
 
 
 def test_a_server_error_never_costs_the_idea(root, monkeypatch):
@@ -252,7 +253,7 @@ def test_the_scripts_never_follow_a_link_the_agent_planted(root):
     (root / "reports").mkdir()
     (root / f"reports/{HID}.md").symlink_to(secret)  # to overwrite host data with a report
     Lab(root, dt.date(2026, 11, 4)).run()
-    outbox = (root / "journal/outbox.md").read_text()
+    outbox = (root / "reports/outbox.md").read_text()
     assert "H-2026-11-04-link refused (not a trial): H-2026-11-04-link.yaml must be a plain file, not a link" in outbox
     assert "SPY" not in outbox and secret.stat().st_size == size and not (root / f"reports/{HID}.md").is_symlink()
 
@@ -386,7 +387,7 @@ def test_stop_rule_counts_rejections_until_a_promotion_or_the_users_resume(root)
     assert lab.rejections_in_a_row() == 5  # the refine neither counts nor resets
     submit(root)
     lab.run()
-    assert "stop rule" in (root / "journal/outbox.md").read_text()
+    assert "stop rule" in (root / "reports/outbox.md").read_text()
     lab.db.execute("insert into resumes values (now() + to_seconds(60))")  # the user answered
     assert lab.rejections_in_a_row() == 0
 
@@ -394,5 +395,5 @@ def test_stop_rule_counts_rejections_until_a_promotion_or_the_users_resume(root)
 def test_the_users_saved_checks_survive_a_damaged_ideas_line(root):
     lab = Lab(root, dt.date(2026, 11, 4))
     assert lab.checks("I-001") == ["orders_per_year > 60"]
-    (root / "ideas.md").write_text("I-001 | done F-001 candidate | seed | behavioral | Time-series trend | MOP 2012\n")
+    (root / "journal/ideas.md").write_text("I-001 | done F-001 candidate | seed | behavioral | Time-series trend | MOP 2012\n")
     assert lab.checks("I-001") == ["orders_per_year > 60"]

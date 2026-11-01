@@ -13,7 +13,7 @@ PRICES = pd.DataFrame(100 * np.exp(np.cumsum(np.random.default_rng(0).normal(0.0
 
 
 def walkthrough_signal(look_at_next_row, centered_vol=False):
-    """the trend signal from docs/program-walkthrough.md: v1 has the bug, v2 the fix."""
+    """the example trend signal: v1 has the bug, v2 the fix."""
     def signal(prices, lookback=126, weighting="equal"):
         past_return = prices / prices.shift(lookback) - 1
         held = past_return > 0

@@ -80,16 +80,16 @@ For each report in `reports/` that has no `strategies/decisions/<id>.yaml` yet (
      When in doubt, reject.
 3. Write `strategies/decisions/<id>.yaml` with `decision:` and `reason:` (one line). For a refine, the reason is the rule change.
 4. Append the journal entry (section 7).
-5. In `ideas.md`, mark the idea's line `done <F-id> <decision>`. If the entry's `next:` is a new idea (not a refine), add it as a `journal` line.
-6. Then read the `journal/outbox.md` lines since your last session. For each card the scripts refused or rejected at step 3,
-   write a journal entry (`why:` the outbox reason) and update its `ideas.md` line: a refused card you will fix keeps
+5. In `journal/ideas.md`, mark the idea's line `done <F-id> <decision>`. If the entry's `next:` is a new idea (not a refine), add it as a `journal` line.
+6. Then read the `reports/outbox.md` lines since your last session. For each card the scripts refused or rejected at step 3,
+   write a journal entry (`why:` the outbox reason) and update its `journal/ideas.md` line: a refused card you will fix keeps
    `testing <H-id>` (put the fixed pair into `strategies/inbox/`); a second truncation failure → `done - reject`;
    an idea you give up → `dropped <why>`.
 
 ### Open session (strong model)
-1. Read the last 20 lines of `journal/outbox.md`, the last 5 entries of `journal/lab.md`, `reports/families.md`, `ideas.md`, and the refine decisions not yet written as cards.
+1. Read the last 20 lines of `reports/outbox.md`, the last 5 entries of `journal/lab.md`, `reports/families.md`, `journal/ideas.md`, and the refine decisions not yet written as cards.
 2. If the stop rule is active (section 8), stop here.
-3. Write refine cards first. Then take the first `new` line in `ideas.md` by source priority:
+3. Write refine cards first. Then take the first `new` line in `journal/ideas.md` by source priority:
    user → journal → seed → agent. Skip `parked` lines. Mark the line `testing <H-id>`.
    Your own idea: add its line with the reason first (template 5.3), then you may test it.
    Each idea needs an economic reason: behavioral, risk or structural.
@@ -102,7 +102,7 @@ For each report in `reports/` that has no `strategies/decisions/<id>.yaml` yet (
 - Step 3: truncation test + novelty check. On a truncation failure, the next open session gets one fix: the files wait in
   `strategies/fix/`; put the fixed pair back into `strategies/inbox/` with the same id. A second failure is a rejection.
   A refused card (bad card, crashing code, full family, a family whose holdout run is used) moves to `strategies/refused/`;
-  `journal/outbox.md` says why. It is not a trial.
+  `reports/outbox.md` says why. It is not a trial.
   Your code runs in a separate strategy sandbox that gets only the prices it is called with: no files, no network.
   If it crashes there, the outbox says only that it crashed. Debug with your smoke test on `data/train/`.
   A hypothesis that lands in a family with 3 members already is refused; it is not a trial.
@@ -164,7 +164,7 @@ A row on every day lets the engine trade every day; each order costs €1.
 Lookahead traps the truncation test catches: `shift(-1)`, `center=True` windows, `bfill`,
 "is this the last day of the month?" checks that look at the next row, full-sample mean or std.
 
-### 5.3 Idea line (`ideas.md`)
+### 5.3 Idea line (`journal/ideas.md`)
 ```
 I-001 | new | user | behavioral | Hold bonds only when stocks fall | why it might work, or a book/paper
 I-002 | new | user | risk | Hold the least jumpy half of the ETFs | why | checks: orders_per_year > 12; val_maxdd > 0.15
@@ -210,7 +210,7 @@ trust: untrusted until the gate — <reason>
   A refine doesn't count and doesn't reset the count. Only a promotion or the user's reset resets it.
   The script counts: the count is at the top of `reports/families.md`, and while the rule is active the script refuses new cards.
 - The script records only the decisions section 4 allows. Another decision is replaced by the rule's decision and noted in the outbox.
-- If `ideas.md` has no `new` line and you have no idea you would bet on, write "Question for the user: idea pool empty" in the journal and open nothing.
+- If `journal/ideas.md` has no `new` line and you have no idea you would bet on, write "Question for the user: idea pool empty" in the journal and open nothing.
 - Every session has a turn cap. If you hit it, write "stopped at cap" and what is unfinished. The next session continues.
 - A session that doesn't start was skipped by the budget veto. That is normal.
 

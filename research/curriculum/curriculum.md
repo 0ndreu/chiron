@@ -8,7 +8,7 @@ Two tracks run in parallel. Chiron's lab runs from week 1 on a harness that was 
 read-only to Chiron). Weeks 1–16 teach the user to audit that lab, not to build it. Every lab result is "untrusted until
 the gate". The module-3 gate means the user can audit the lab; from then on the user decides what goes into their own IBKR paper
 account. Chiron's lab searches from week 1; the user's own strategy work starts after the gate (ideas can go into
-`ideas.md` any time; the lab tests them first).
+`journal/ideas.md` any time; the lab tests them first).
 
 Data rules: `AGENTS.md`, "Data in lessons" (one copy; they bind Chiron's demos and the user's homework). In short:
 Chiron's demos use train data (2007–2011); homework on the user's own computer uses data up to [HOLDOUT_START]; the
@@ -96,7 +96,7 @@ still doesn't fit, Chiron splits it.
   at €5,000. Lab material: orders and costs in the reports.
 - W10. Lookahead bias.
   Homework: Chiron hides 3 lookahead bugs in a small signal; the user finds them. Lab material: truncation failures in
-  `journal/outbox.md` (second failures in `journal/lab.md`).
+  `reports/outbox.md` (second failures in `journal/lab.md`).
 - W11. Audit `harness/checks.py`, part 1, line by line: the truncation test and the novelty check (families).
 - W12. Audit `harness/checks.py`, part 2: the card checks and the `failure_if` parser.
 - W13. Overfitting and multiple testing.
@@ -108,7 +108,8 @@ still doesn't fit, Chiron splits it.
   The real holdout example: why lesson data ends at [HOLDOUT_START], and why the forward paper portfolio is the real
   judge.
   Audit by behaviour: `harness/lab.py`, `harness/sandbox.py`, `scripts/`. The test names are the rules; run the
-  deliberate-break script and see each break caught; read a line only where a test is unclear.
+  deliberate-break script (`uv run python -m tests.deliberate_break`, ~2 min) and see each break caught; read a line
+  only where a test is unclear.
 - W16. Gate: quiz ≥ 80% + explain three traps with your own examples + explain each rule of the result code (engine,
   checks, evaluate) + find the bug in the result code without saying where.
 
@@ -118,7 +119,7 @@ still doesn't fit, Chiron splits it.
 - W18. Drawdowns, Kelly and why not full Kelly; personal risk rules.
 - W19. First strategy: trend following on the universe with volatility targeting.
   Homework [hands-on]: write the signal on train; run the truncation test on it. Compare it with the lab's family for
-  the same idea in `reports/families.md`. If the lab hasn't tested the idea, add it to `ideas.md` (source `user`).
+  the same idea in `reports/families.md`. If the lab hasn't tested the idea, add it to `journal/ideas.md` (source `user`).
 - W20. Honest evaluation: costs, validation, the benchmark — from the lab's report, not a private backtest.
   Trading plan v1: instruments, risk, frequency, stop conditions. The user decides what, if anything, goes into their own
   IBKR paper account, and places those orders by hand.

@@ -9,17 +9,18 @@ they follow `program.md`.
 |---|---|---|
 | `curriculum/curriculum.md` | read | the course, week by week |
 | `curriculum/glossary.md` | read | the lab's words in plain English, for Monday items before the gate |
-| `curriculum/progress.md` | read, write | your memory of the course. Read it first in every session with the user; update it at the end |
+| `journal/progress.md` | read, write | your memory of the course. Read it first in every session with the user; update it at the end |
 | `program.md` | read | the lab protocol. Quote it; never change it |
-| `journal/lab.md`, `journal/outbox.md` | read | the lab journal; the scripts' notes |
+| `journal/lab.md`, `reports/outbox.md` | read | the lab journal; the scripts' notes |
 | `reports/` | read | the ≤ 20-line reports, `families.md`, `paper.md` |
-| `ideas.md` | read, write | the idea backlog. The user's ideas go here (format: `program.md`, 5.3) |
+| `journal/ideas.md` | read, write | the idea backlog. The user's ideas go here (format: `program.md`, 5.3) |
 | `data/train/` | read | the only prices you have: 2007-04 → 2011-12 |
 | `universe.yaml`, `strategies/archive/`, `fix/`, `refused/` | read | the 13 ETFs; the lab's old cards and code |
 | `books/` | read | the course books, if the user put them there |
 
-The server lets you write only five paths: `curriculum/progress.md`, `ideas.md`, `strategies/inbox/`,
-`strategies/decisions/` and `journal/lab.md`. The last three are for lab sessions only: that is a rule, not a lock.
+The server lets you write only in three folders: `journal/` (`progress.md`, `ideas.md`, `lab.md`), `strategies/inbox/`
+and `strategies/decisions/`. `journal/lab.md` and the two `strategies/` folders are for lab sessions only: that is a
+rule, not a lock.
 Scripts own the registry; you never write it.
 
 ## The week (Europe/Madrid)
@@ -55,7 +56,7 @@ that is normal.
 - Your demos use `data/train/` (2007-04 → 2011-12; 2008 is in it).
 - Homework that needs later years runs on the user's own computer, with data up to [HOLDOUT_START] — never later.
 - The user's strategy backtests (a rule → its returns) use train data only. A test of a rule on later years goes through
-  the lab (`ideas.md`), so the registry counts it. If the user asks you to backtest a rule on later years, say no and say why:
+  the lab (`journal/ideas.md`), so the registry counts it. If the user asks you to backtest a rule on later years, say no and say why:
   a private test the Deflated Sharpe never sees.
 - Lessons and the lab share your memory: holdout-period prices must not reach it. W15 uses this rule as the real
   holdout example.
@@ -65,7 +66,7 @@ that is normal.
 - Before the module-3 gate, every lab result is "untrusted until the gate", with the reason. Monday items use plain
   words and the glossary; show a number only for a concept the knowledge map marks "understands" or higher.
 - Use real lab entries when a lesson covers their concept (the list of weeks: `program.md`, section 9).
-- The user's own strategy ideas, any time (before the gate too): help write the line in `ideas.md` (source
+- The user's own strategy ideas, any time (before the gate too): help write the line in `journal/ideas.md` (source
   `user`, optional `checks:`). The lab tests them first. Explain the reports; don't recommend.
 - The stop rule: if the journal asks "idea pool empty, or protocol too strict?", bring it to the next session. Only
   the user resets it (`python -m harness.lab resume`).

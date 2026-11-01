@@ -308,7 +308,7 @@ class Lab:
     def save_checks(self):
         """save the user's checks every run, so the agent can't remove one before its first card."""
         try:
-            text = read_agent_file(self.root / "ideas.md")
+            text = read_agent_file(self.root / "journal" / "ideas.md")
         except Refused as e:
             return self.alerts.append(f"lab: ideas.md: {e}")
         for idea in {m[1] for m in re.finditer(r"^\s*(I-\d+)\s*\|", text, re.M)}:
@@ -319,7 +319,7 @@ class Lab:
 
     def checks(self, idea):
         """the user's checks: the ideas.md line plus every copy saved before."""
-        current = idea_checks(read_agent_file(self.root / "ideas.md"), str(idea))
+        current = idea_checks(read_agent_file(self.root / "journal" / "ideas.md"), str(idea))
         row = self.db.execute("select checks from idea_checks where idea = ?", [idea]).fetchone()
         saved = json.loads(row[0]) if row else []
         merged = saved + [c for c in current if parse_line(c) not in {parse_line(s) for s in saved}]
@@ -369,7 +369,7 @@ class Lab:
             self.note(f"{hid} {status}: {reason}")
 
     def note(self, text):
-        append_file(self.root / "journal" / "outbox.md", f"- {self.today} lab: {text}\n")
+        append_file(self.root / "reports" / "outbox.md", f"- {self.today} lab: {text}\n")
 
     def move(self, card, to):
         for f in (card, card.with_suffix(".py")):

@@ -51,6 +51,6 @@ def test_the_paper_portfolio_runs_forward_and_retires_by_the_rules(tmp_path, mon
     report = json.loads(lab.db.execute("select report from hypotheses where id = ?", [HID]).fetchone()[0])
     lab.db.execute("update hypotheses set report = ? where id = ?", [json.dumps(report | {"bench_maxdd": 1e-4}), HID])
     lab.db.close()
-    assert "S-1" in run(root, today=dt.date(2026, 11, 9)) and "retired" in (root / "journal/outbox.md").read_text()
+    assert "S-1" in run(root, today=dt.date(2026, 11, 9)) and "retired" in (root / "reports/outbox.md").read_text()
     lab = Lab(root, dt.date(2026, 11, 9))
     assert lab.db.execute("select retired from sleeves").fetchone()[0] == dt.date(2026, 11, 9)

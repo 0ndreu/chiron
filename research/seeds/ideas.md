@@ -11,7 +11,7 @@ Line format and rules: `program.md`, section 5.3. Never delete a line; change it
 ## Journal follow-ups
 
 ## Seed list
-<!-- written 2026-10-31 from a separate research (the report: docs/seed-research.md). one line per expected family;
+<!-- written 2026-10-31 from a separate research. one line per expected family;
 close variants are refines of that line, not new lines. order = priority: simple rules -> statistics, calendar ideas last.
 "summary only" or "source not verified" = the paper itself wasn't opened. performance numbers in papers come from other universes. -->
 I-001 | new | seed | behavioral | Hold each asset only while its price is above its own long moving average, else cash | trends persist because investors react slowly to news; Moskowitz-Ooi-Pedersen 2012 (JFE), Faber 2007 (JWM). Refines: 12-month return > 0 instead of the average; absolute momentum (Antonacci)

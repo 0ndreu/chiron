@@ -19,13 +19,12 @@ has two jobs:
 | `hermes/cron-jobs.md` | every scheduled job: when, which model, which budget check |
 | `research/program.md` | the lab protocol the agent follows |
 | `research/AGENTS.md` | the rules for sessions with the user |
-| `research/curriculum/` | the course, the progress file, the glossary |
+| `research/curriculum/` | the course and the glossary |
 | `research/harness/` | the backtest engine, the checks, the lab runner, the strategy sandbox |
 | `research/scripts/` | the data download, the paper portfolio, the budget check |
 | `research/lab.yaml`, `research/universe.yaml` | dates, costs and the LLM budget; the 13 ETFs |
-| `research/ideas.md` | the idea backlog |
-| `docs/program-walkthrough.md` | one idea's path through the lab, step by step |
-| `docs/seed-research.md` | the sources behind the seed ideas |
+| `research/seeds/` | the first idea backlog (the seed ideas) and an empty progress file; the setup copies each into `journal/` only when it is missing |
+| `deploy/` | the server setup: the sandbox image, the job wrappers, `setup.sh`, `jobs.sh` |
 
 ## Rules the design depends on
 
@@ -43,6 +42,7 @@ has two jobs:
 cd research
 uv sync
 uv run pytest
+uv run python -m tests.deliberate_break   # plants known bugs one at a time; each must fail a test (~2 min)
 ```
 
 Python 3.12, managed with [uv](https://docs.astral.sh/uv/). The data download needs a Tiingo key:
