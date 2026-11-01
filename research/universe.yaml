@@ -1,0 +1,5 @@
+# the 13 ETFs: asset class -> tickers.
+# the benchmark gives each class 1/3, equal weight inside the class.
+equities: [SPY, IWM, EFA, EEM]
+bonds: [SHY, IEF, TLT, TIP, LQD, HYG]
+real_assets: [IYR, GLD, DBC]

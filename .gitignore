@@ -1,0 +1,16 @@
+# ide
+.idea/
+
+docs/
+
+# python
+.venv/
+__pycache__/
+.pytest_cache/
+
+# lab state: lives on the server, never in git
+research/data/
+research/registry/
+research/strategies/
+research/reports/
+research/journal/

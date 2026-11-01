@@ -1,0 +1,25 @@
+# lab settings (program.md section 3). the scripts read dates and costs only from here.
+periods:
+  train: 2007-04-01
+  validation: 2012-01-01
+  holdout: null     # [HOLDOUT_START]: the latest training cutoff of the lab models (set when the models are picked)
+  week_1: null      # [WEEK_1_START]
+costs:
+  capital: 5000
+  fee: 1.0          # Revolut Standard, per order
+  spread_bps: 0     # [Y]: the user's W2 homework
+  min_trade: 0.01   # gaps under 1% of the portfolio aren't traded
+approved_libraries: []  # beyond pandas, numpy, scipy, statsmodels; the user adds a name after approving it
+budget:
+  state_db: ~/.hermes/state.db
+  month_usd: 22          # Nous Portal Plus credits
+  billing_day: null      # the day of the month the credits renew; null = the 1st (the user sets it)
+  reserve: 0.10          # money builds up daily: 22 x 0.90 / days in the cycle
+  margin: 0.20           # Hermes cost estimates are lower bounds
+  user_jobs:             # [weekday (0 = Monday), expected usd] of the user's jobs; null until the week-0 measurement
+    - [0, null]          # Monday kickoff
+    - [2, null]          # Wednesday quiz
+    - [6, null]          # Sunday 10:30 reminder (cheap model)
+    - [6, null]          # Sunday 11:00 lesson (interactive, never skipped)
+    - [6, null]          # Sunday 19:00 check
+  prices: {}             # model: [usd per M input tokens, usd per M output tokens], for sessions without a cost (set when the models are picked)
