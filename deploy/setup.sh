@@ -17,7 +17,7 @@
 #    8. hermes, pinned to one release
 #    9. hermes settings
 #   10. chiron's files for hermes: SOUL.md and the job wrappers
-#   11. the hermes gateway as a system service (it also runs the job scheduler)
+#   11. the hermes gateway as a user service of hermes (it also runs the job scheduler)
 #
 # not here: the Tiingo key (a secret: you put it in once by hand, the end of the run says how), the models,
 # Telegram and the jobs (they come after the Portal purchase).
@@ -208,12 +208,15 @@ chmod 755 /usr/local/bin/chiron-resume
 
 
 say "11. the gateway service"
-# a system service that starts at boot and runs as hermes (hermes docs: messaging gateway). its unit has
-# Restart=always, so systemd restarts it after a crash: no extra watchdog.
-"$HERMES" gateway install --system --run-as-user hermes
+# a user service of hermes, never a system one (hermes docs: "Non-Sudo / System Service User Installs"): hermes's
+# files must belong to hermes, so root never runs the hermes command. linger (step 4) starts it at boot, its unit has
+# Restart=always (no extra watchdog), and the cron jobs get their restart-safe systemd scopes from the same session.
+# logs: sudo -u hermes XDG_RUNTIME_DIR=/run/user/$(id -u hermes) journalctl --user -u hermes-gateway
+as_hermes_user() { as_hermes env XDG_RUNTIME_DIR="/run/user/$(id -u hermes)" "$@"; }   # systemctl --user needs it
+as_hermes_user "$HERMES" gateway install
 # sandbox containers made with the old settings or old files: remove them, hermes makes new ones on the next command
 docker ps -aq --filter label=hermes-agent=1 | xargs -r docker rm -f >/dev/null
-systemctl restart hermes-gateway
+as_hermes_user systemctl --user restart hermes-gateway
 
 
 say "done"
