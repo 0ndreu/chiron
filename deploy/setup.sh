@@ -24,8 +24,8 @@
 #   10. chiron's files for hermes: SOUL.md and the job wrappers
 #   11. the hermes gateway as a user service of hermes (it also runs the job scheduler)
 #
-# not here: the Tiingo key (a secret: you put it in once by hand, the end of the run says how), the models,
-# Telegram and the jobs (they come after the Portal purchase).
+# not here: the secrets, put in once by hand (the Tiingo key: the end of the run says how; the Portal login; the Telegram
+# token), and the jobs (deploy/jobs.sh).
 set -euo pipefail
 
 REPO=$(cd "$(dirname "$0")/.." && pwd)                   # the checkout this script lives in, e.g. /opt/chiron
@@ -176,6 +176,17 @@ volumes=""
 for path in $read_only; do volumes+="\"$RESEARCH/$path:$RESEARCH/$path:ro\", "; done
 for path in $writable; do volumes+="\"$RESEARCH/$path:$RESEARCH/$path\", "; done
 hset terminal.docker_volumes "[${volumes%, }]"
+
+# the main model (lessons, chats; the jobs pin their own): Portal, a fixed snapshot. its training cutoff sets the
+# holdout start in lab.yaml, so change both together.
+hset model.provider nous
+hset model.default anthropic/claude-sonnet-5.5
+hset model.base_url https://inference-api.nousresearch.com/v1
+# side tasks on the cheap model, same cutoff (they see lab content too): compression of long chats, titles, images
+for task in compression title_generation vision; do
+    hset auxiliary.$task.provider nous
+    hset auxiliary.$task.model anthropic/claude-haiku-5.5
+done
 
 # off in every session, the CLI too:
 #   cronjob: a chat could create, change or remove jobs, and skip the budget check (cron agents can't by default)

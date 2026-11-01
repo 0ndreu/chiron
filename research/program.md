@@ -52,11 +52,12 @@ Refines don't raise it, so they are capped. Submit only ideas you would bet on.
   | Period | Dates | Who sees it |
   |---|---|---|
   | Train | 2007-04 → 2011-12 | you (`data/train/`) and scripts |
-  | Validation | 2012-01 → [HOLDOUT_START] | scripts only |
-  | Holdout | [HOLDOUT_START] → [WEEK_1_START] | one script, pass/fail only |
-  | Forward | from [WEEK_1_START] | scripts (paper portfolio) |
+  | Validation | 2012-01 → 2026-07-01 | scripts only |
+  | Holdout | 2026-07-01 → 2026-11-09 | one script, pass/fail only |
+  | Forward | from 2026-11-09 | scripts (paper portfolio) |
 
-  [HOLDOUT_START] = the latest training cutoff of the lab models. Validation start 2012-01 (default) gives ~14 years — a shorter validation can't pass the Deflated Sharpe even with a good idea.
+  2026-07-01 = the day after the latest training cutoff of the lab models (Claude Sonnet 5.5 and Haiku 5.5: Jun 2026). A lab
+  model with a later cutoff moves this date. Validation start 2012-01 (default) gives ~14 years — a shorter validation can't pass the Deflated Sharpe even with a good idea.
 - Benchmark: ⅓ equities, ⅓ bonds, ⅓ real assets, equal weight inside each class, quarterly rebalance.
 - Capital: €5,000 simulated (fixed EUR/USD rate), for each sleeve and for the benchmark. Each test period (validation, holdout) starts with €5,000.
 - Orders: a row with any number is an order: the engine moves each ETF to its weight (NaN in that row = 0).
@@ -222,7 +223,7 @@ trust: untrusted until the gate — <reason>
 - The `concepts:` line links the journal to the knowledge map. When a lesson covers a concept, the tutor uses a real lab entry:
   orders and costs (W9), truncation failures for lookahead (W10), train vs validation gaps for overfitting (W13),
   walk-forward (W15), premium families (W21–W25).
-- Lesson data ends at [HOLDOUT_START].
+- Lesson data ends at 2026-07-01.
 
 ## 10. Sleeves (the agent's paper portfolio)
 

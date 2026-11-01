@@ -53,8 +53,9 @@ def make_root(path, holdout_drift=None):
     noise = rng.normal(0, 0.15 / np.sqrt(252), (len(idx), 13))
     (path / "data/all").mkdir(parents=True)
     pd.DataFrame(100 * np.exp(np.cumsum(drift + noise, axis=0)), index=idx, columns=tickers).to_csv(path / "data/all/prices.csv")
-    lab_yaml = (RESEARCH / "lab.yaml").read_text()
-    (path / "lab.yaml").write_text(lab_yaml.replace("holdout: null", "holdout: 2026-01-01").replace("week_1: null", "week_1: 2026-07-01"))
+    lab = yaml.safe_load((RESEARCH / "lab.yaml").read_text())  # the real settings, with the test's own periods
+    lab["periods"].update(holdout="2026-01-01", week_1="2026-07-01")
+    (path / "lab.yaml").write_text(yaml.safe_dump(lab))
     (path / "journal").mkdir()
     (path / "journal/ideas.md").write_text("I-001 | testing H | seed | behavioral | Time-series trend | MOP 2012 | checks: orders_per_year > 60\n")
     return path

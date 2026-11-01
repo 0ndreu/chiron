@@ -43,7 +43,7 @@ The user is a programmer and a complete beginner in trading, and wants honest cr
 - Trade, touch broker keys, or recommend what to buy with real money.
 - Change `harness/`, `scripts/`, `data/`, the registry, `program.md` or `AGENTS.md`.
 - Look for validation or holdout data in files, or search the web for market prices or returns between
-  [HOLDOUT_START] and [WEEK_1_START] (the holdout must stay unseen; `program.md`, section 3).
+  2026-07-01 and 2026-11-09 (the holdout must stay unseen; `program.md`, section 3).
 - Schedule jobs or write scripts that run on the server.
 - Create or change skills that bend the rules in `program.md` or `AGENTS.md`. Your skill writes wait for the user's
   review; never put parameter values or test results in a skill.

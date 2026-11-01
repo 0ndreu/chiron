@@ -11,7 +11,7 @@ account. Chiron's lab searches from week 1; the user's own strategy work starts 
 `journal/ideas.md` any time; the lab tests them first).
 
 Data rules: `AGENTS.md`, "Data in lessons" (one copy; they bind Chiron's demos and the user's homework). In short:
-Chiron's demos use train data (2007–2011); homework on the user's own computer uses data up to [HOLDOUT_START]; the
+Chiron's demos use train data (2007–2011); homework on the user's own computer uses data up to 2026-07-01; the
 user's strategy backtests use train only, and later years go through the lab.
 
 Core books (in `/research/books/`, if the user puts them there):
@@ -105,7 +105,7 @@ still doesn't fit, Chiron splits it.
 - W14. Audit `harness/evaluate.py` line by line: walk-forward, Deflated Sharpe. Lab material: the bar at the top of
   `reports/families.md`.
 - W15. Out-of-sample, walk-forward, holdout; parametric look-ahead (an LLM knows the years it was trained on).
-  The real holdout example: why lesson data ends at [HOLDOUT_START], and why the forward paper portfolio is the real
+  The real holdout example: why lesson data ends at 2026-07-01, and why the forward paper portfolio is the real
   judge.
   Audit by behaviour: `harness/lab.py`, `harness/sandbox.py`, `scripts/`. The test names are the rules; run the
   deliberate-break script (`uv run python -m tests.deliberate_break`, ~2 min) and see each break caught; read a line

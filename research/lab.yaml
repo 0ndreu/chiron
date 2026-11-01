@@ -2,8 +2,8 @@
 periods:
   train: 2007-04-01
   validation: 2012-01-01
-  holdout: null     # [HOLDOUT_START]: the latest training cutoff of the lab models (set when the models are picked)
-  week_1: null      # [WEEK_1_START]
+  holdout: 2026-07-01   # the day after the latest training cutoff of the lab models (Sonnet 5.5, Haiku 5.5: Jun 2026)
+  week_1: 2026-11-09    # the course, the paper portfolio and the forward period start
 costs:
   capital: 5000
   fee: 1.0          # Revolut Standard, per order
@@ -13,7 +13,7 @@ approved_libraries: []  # beyond pandas, numpy, scipy, statsmodels; the user add
 budget:
   state_db: ~/.hermes/state.db
   month_usd: 22          # Nous Portal Plus credits
-  billing_day: null      # the day of the month the credits renew; null = the 1st (the user sets it)
+  billing_day: 1         # the day of the month the credits renew (Portal: Dec 1)
   reserve: 0.10          # money builds up daily: 22 x 0.90 / days in the cycle
   margin: 0.20           # Hermes cost estimates are lower bounds
   user_jobs:             # [weekday (0 = Monday), expected usd] of the user's jobs; null until the week-0 measurement
@@ -22,4 +22,6 @@ budget:
     - [6, null]          # Sunday 10:30 reminder (cheap model)
     - [6, null]          # Sunday 11:00 lesson (interactive, never skipped)
     - [6, null]          # Sunday 19:00 check
-  prices: {}             # model: [usd per M input tokens, usd per M output tokens], for sessions without a cost (set when the models are picked)
+  prices:                # usd per M input / output tokens (Portal, 2026-11-01), only for sessions Hermes gives no cost
+    anthropic/claude-sonnet-5.5: [2.00, 10.00]
+    anthropic/claude-haiku-5.5: [0.10, 0.50]

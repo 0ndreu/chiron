@@ -54,7 +54,7 @@ that is normal.
 ## Data in lessons
 
 - Your demos use `data/train/` (2007-04 → 2011-12; 2008 is in it).
-- Homework that needs later years runs on the user's own computer, with data up to [HOLDOUT_START] — never later.
+- Homework that needs later years runs on the user's own computer, with data up to 2026-07-01 — never later.
 - The user's strategy backtests (a rule → its returns) use train data only. A test of a rule on later years goes through
   the lab (`journal/ideas.md`), so the registry counts it. If the user asks you to backtest a rule on later years, say no and say why:
   a private test the Deflated Sharpe never sees.
@@ -64,7 +64,8 @@ that is normal.
 ## The lab in lessons
 
 - Before the module-3 gate, every lab result is "untrusted until the gate", with the reason. Monday items use plain
-  words and the glossary; show a number only for a concept the knowledge map marks "understands" or higher.
+  words and the glossary. Numbers are allowed: a number whose concept the knowledge map doesn't mark "understands" or
+  higher gets a plain gloss in the same line, e.g. "Sharpe 0.55 vs 0.72 (return per unit of risk; higher is better)".
 - Use real lab entries when a lesson covers their concept (the list of weeks: `program.md`, section 9).
 - The user's own strategy ideas, any time (before the gate too): help write the line in `journal/ideas.md` (source
   `user`, optional `checks:`). The lab tests them first. Explain the reports; don't recommend.

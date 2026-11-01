@@ -33,7 +33,7 @@ when US and EU daylight saving don't match).
   description in every call; the week-0 measurement counts it.
 - **No web, anywhere:** `agent.disabled_toolsets` has `web` and `browser` (and `cronjob`), for every session, the CLI
   too. Web tools run in Hermes on the host, not in the container, and need no key; a page written after
-  [HOLDOUT_START] would make the holdout useless. Enabling a toolset in `hermes tools` removes it from that list:
+  the holdout start (2026-07-01) would make the holdout useless. Enabling a toolset in `hermes tools` removes it from that list:
   run `deploy/setup.sh` again after any Hermes setup step.
 - **The budget wrappers never exit non-zero.** Hermes applies the gate only when the script exits 0; on a crash it runs
   the agent anyway (`cron/scheduler.py`). So if the check command fails, `budget-lab.sh` prints `{"wakeAgent": false}`
@@ -61,32 +61,36 @@ when US and EU daylight saving don't match).
 
 | # | Job | When | Model | Budget wrapper | Prompt |
 |---|---|---|---|---|---|
-| 1 | Kickoff | Mon 09:00 | cheap | `budget-user.sh` | `Monday kickoff. Follow AGENTS.md, "The week", Mon.` |
-| 2 | Quiz | Wed 20:00 | cheap | `budget-user.sh` | `Wednesday quiz. Follow AGENTS.md, "The week", Wed.` |
-| 3 | Reminder | Sun 10:30 | cheap | `budget-user.sh` | `Sunday reminder. Follow AGENTS.md, "The week", Sun 10:30.` |
-| 4 | Weekly check | Sun 19:00 | cheap | `budget-user.sh` | `Weekly check. Follow AGENTS.md, "The week", Sun 19:00.` |
-| 5 | Lab close | Tue, Thu, after S1 | cheap | `budget-lab.sh` | `Lab session: close. Follow /research/program.md, section 4, "Close session". Nothing else.` |
-| 6 | Lab open | Tue, Thu, after S3 | strong | `budget-lab.sh` | `Lab session: open. Follow /research/program.md, section 4, "Open session". Nothing else.` |
+| 1 | Kickoff | Mon 09:00 | Sonnet 5.5 | `budget-user.sh` | `Monday kickoff. Follow AGENTS.md, "The week", Mon. At the end, update journal/progress.md (AGENTS.md, "progress.md").` |
+| 2 | Quiz | Wed 20:00 | Sonnet 5.5 | `budget-user.sh` | `Wednesday quiz. Follow AGENTS.md, "The week", Wed. At the end, update journal/progress.md (AGENTS.md, "progress.md").` |
+| 3 | Reminder | Sun 10:30 | Sonnet 5.5 | `budget-user.sh` | `Sunday reminder. Follow AGENTS.md, "The week", Sun 10:30. At the end, update journal/progress.md (AGENTS.md, "progress.md").` |
+| 4 | Weekly check | Sun 19:00 | Sonnet 5.5 | `budget-user.sh` | `Weekly check. Follow AGENTS.md, "The week", Sun 19:00. At the end, update journal/progress.md (AGENTS.md, "progress.md").` |
+| 5 | Lab close | Wed, Fri 03:00 | Haiku 5.5 | `budget-lab.sh` | `Lab session: close. Follow /research/program.md, section 4, "Close session". Nothing else.` |
+| 6 | Lab open | Wed, Fri 04:00 | Sonnet 5.5 | `budget-lab.sh` | `Lab session: open. Follow /research/program.md, section 4, "Open session". Nothing else.` |
 
-"Cheap" and "strong" are the models picked before the Portal weekend, pinned to exact versions (an alias could move
-the training cutoff, and the holdout starts at it). The close session only reads reports and writes files; the open
+The models (picked after a comparison on the same tasks): Sonnet 5.5 for the lab's open session, the tutor jobs and the
+main model (the Sunday lesson and chats); Haiku 5.5 for the lab's close session and Hermes's side tasks (compression,
+titles, images). Portal ids `anthropic/claude-sonnet-5.5` and `anthropic/claude-haiku-5.5`, fixed snapshots, both with a
+Jun 2026 training cutoff: the holdout starts 2026-07-01. A model with a later cutoff moves the holdout start. The close session only reads reports and writes files; the open
 session runs its smoke test in the terminal.
 
 ## Script-only jobs (no LLM)
 
 | # | Job | When | Wrapper | Command | Prints |
 |---|---|---|---|---|---|
-| S1 | Data, then paper | Mon–Fri, [DATA_TIME] | `data-paper.sh` | `python -m scripts.data > registry/data.log`, then `python -m scripts.paper` | paper events (a sleeve retired, a server error); bad data → exit 1 → Hermes's error alert with the problem list |
+| S1 | Data, then paper | Tue–Sat 02:30 | `data-paper.sh` | `python -m scripts.data > registry/data.log`, then `python -m scripts.paper` | paper events (a sleeve retired, a server error); bad data → exit 1 → Hermes's error alert with the problem list |
 | S2 | Paper summary | Mon 08:45 | `paper-summary.sh` | `python -m scripts.paper summary` | the weekly numbers, then any events, before the kickoff |
-| S3 | Lab run after close | Tue, Thu, after job 5 | `lab-run.sh` | `python -m harness.lab run` | alerts only (records decisions, step 6) |
-| S4 | Lab run after open | Tue, Thu, after job 6 | `lab-run.sh` | `python -m harness.lab run` | alerts only (tests the new cards) |
+| S3 | Lab run after close | Wed, Fri 03:30 | `lab-run.sh` | `python -m harness.lab run` | alerts only (records decisions, step 6) |
+| S4 | Lab run after open | Wed, Fri 04:30 | `lab-run.sh` | `python -m harness.lab run` | alerts only (tests the new cards) |
 | S5 | Budget alert | daily 21:00 | `budget-alert.sh` | `python -m scripts.budget alert` | one line at 80% of the week's share |
 | S6 | Usage report | Sun 18:45 | `budget-report.sh` | `python -m scripts.budget report` | the weekly usage report, with skipped jobs and the last lab skip reason, before the check |
 | S7 | Skill proposals | Sun 18:50 | `skill-proposals.sh` | count the entries in `~/.hermes/pending/skills/` | "N skill proposals wait for review (/skills pending)"; nothing if N = 0 |
 
-[DATA_TIME]: after Tiingo publishes the day's prices; check when that happens on the Portal weekend. If it is after midnight, the
-weekday labels of S1 and the Tue/Thu chain move one day later. S1 must end before S2 on Monday morning.
-The Tue/Thu chain: S1 → 5 → S3 → 6 → S4, each step after the previous one has ended. Hermes starts jobs only by the
+The data time: Tiingo: "Most US Equity prices are available at 5:30 PM EST, however exchanges may send corrections until
+8 PM EST" (its end-of-day docs). 8 PM ET is 02:00 in Madrid (01:00 in the weeks when US and EU daylight saving differ), so S1
+runs at 02:30 the next morning, Tue–Sat for the Mon–Fri closes, and the lab chain runs Wed and Fri. S1 ends long before S2
+on Monday morning.
+The Wed/Fri chain: S1 → 5 → S3 → 6 → S4, each step after the previous one has ended. Hermes starts jobs only by the
 clock (`context_from` reads the last output; it doesn't wait) and may run them in parallel, so each step gets a fixed
 time, one slot after the previous one. A slot is longer than `agent.run_budget_seconds` and than the longest script
 run; the five times are at the top of `deploy/jobs.sh`. After the gateway was down, each missed job runs once when it
