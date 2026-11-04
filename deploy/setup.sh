@@ -202,8 +202,11 @@ hset platform_toolsets.telegram '["file", "terminal", "skills"]'
 hset cron.mirror_delivery true
 # every skill the agent writes waits for the user's review (/skills pending)
 hset skills.write_approval true
-# one warning near the turn cap, so a session can still write "stopped at cap". it works once week 0 sets
-# agent.max_turns (the measurement gives the number).
+# the turn and wall-clock caps of every session: each cron job and each message of a chat. until the week-0
+# measurement gives the numbers: 100 turns and 20 minutes, shorter than a 30-minute lab slot (deploy/jobs.sh)
+hset agent.max_turns 100
+hset agent.run_budget_seconds 1200
+# one warning near the turn cap, so a session can still write "stopped at cap"
 hset agent.budget_warning_ratio 0.8
 # no update checks and no usage metrics leave the server
 hset updates.check false

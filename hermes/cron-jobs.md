@@ -16,7 +16,8 @@ when US and EU daylight saving don't match).
   doesn't have. So every job gets the toolsets of the `cron` platform (`hermes tools`), and `cron.mirror_delivery: true`
   makes deliveries continuable.
 - Turn and wall-clock caps exist only globally (`agent.max_turns`, `agent.run_budget_seconds`), not per job: one
-  cap each, from the hungriest job in the week-0 measurement × 1.5. They also limit each message of the Sunday chat.
+  cap each, from the hungriest job in the week-0 measurement × 1.5 (until then 100 turns and 1200 s, set in
+  `deploy/setup.sh`). They also limit each message of the Sunday chat.
 
 ## Settings for every job
 
@@ -97,8 +98,9 @@ run; the five times are at the top of `deploy/jobs.sh`. After the gateway was do
 returns, maybe together with the others: then a lab run can refuse a card that the open session hasn't finished
 (not a trial; the note says why).
 
-Until week 0 fills `budget.user_jobs` in `lab.yaml`, the budget check skips every lab job ("the cost of the user's jobs
-isn't measured yet"; S6 shows the reason). So the week-0 measurement measures the user's jobs first, then the lab jobs.
+`budget.user_jobs` in `lab.yaml` holds back the cost of the user's jobs still ahead in the week from the lab's share. A
+`null` cost skips every lab job ("the cost of the user's jobs isn't measured yet"; S6 shows the reason). Until the week-0
+measurement it is empty: the lab may use the whole weekly share, and the user's jobs still run up to their own limit.
 
 ## Outside Hermes
 

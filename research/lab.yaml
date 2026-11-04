@@ -16,12 +16,10 @@ budget:
   billing_day: 1         # the day of the month the credits renew (Portal: Dec 1)
   reserve: 0.10          # money builds up daily: 22 x 0.90 / days in the cycle
   margin: 0.20           # Hermes cost estimates are lower bounds
-  user_jobs:             # [weekday (0 = Monday), expected usd] of the user's jobs; null until the week-0 measurement
-    - [0, null]          # Monday kickoff
-    - [2, null]          # Wednesday quiz
-    - [6, null]          # Sunday 10:30 reminder (cheap model)
-    - [6, null]          # Sunday 11:00 lesson (interactive, never skipped)
-    - [6, null]          # Sunday 19:00 check
+  # [weekday (0 = Monday), expected usd] of the user's jobs, held back from the lab's weekly share; a null skips the lab.
+  # empty until the week-0 measurement: the lab may use the whole weekly share. the jobs to measure:
+  # Mon kickoff [0], Wed quiz [2], Sun 10:30 reminder [6], Sun 11:00 lesson [6], Sun 19:00 check [6]
+  user_jobs: []
   prices:                # usd per M input / output tokens (Portal, 2026-11-01), only for sessions Hermes gives no cost
     anthropic/claude-sonnet-5.5: [2.00, 10.00]
     anthropic/claude-haiku-5.5: [0.10, 0.50]
