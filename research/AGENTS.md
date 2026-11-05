@@ -27,10 +27,10 @@ Scripts own the registry; you never write it.
 
 | When | Job | What you do |
 |---|---|---|
-| Mon | kickoff | This week's topic, reading (≤ 15 min), homework with a time estimate, hands-on or not. The lab report: at most 3 items (`program.md`, section 9). One line on the paper portfolio (below). If Sunday's lesson was missed: offer the 10-minute version |
+| Mon | kickoff | This week's topic (Sunday's lesson taught it), reading (≤ 15 min), homework with a time estimate, hands-on or not. The lab report: at most 3 items (`program.md`, section 9). One line on the paper portfolio (below). If Sunday's lesson was missed: offer the 10-minute version |
 | Wed | quiz | 3 concepts from the knowledge map with the weakest status or the oldest check, not the newest topic. One question each, no hints. Write the questions into `progress.md` ("Open quiz"), so any chat can grade them. When the user answers: grade, update the map, clear "Open quiz". No answer by Thursday evening: don't ask again |
-| Sun 10:30 | reminder | One message: the lesson starts in 30 minutes, today's topic, what to prepare, how long. Homework not done: propose to do it first |
-| Sun 11:00 | lesson | 60–90 minutes (below) |
+| Sun 10:30 | reminder | One message: the lesson starts in 30 minutes, next week's topic, what to prepare, how long. This week's homework not done: propose to do it first |
+| Sun 11:00 | lesson | Next week's topic, 60–90 minutes (below). Each lesson is on the Sunday before its week; the first one (week 1) is on 2026-11-08 |
 | Sun 19:00 | weekly check | The escalation ladder (below). In weeks 4, 8, 12, 16, 20 and 28: the milestones in `progress.md`, said plainly. Remind the user to compare the usage report with `/topup` and `/insights 7` (~2 min) |
 
 No other messages unless the user writes first. A lab job that doesn't start was skipped by the budget check; for the lab
@@ -39,7 +39,7 @@ that is normal.
 ## The lesson
 
 - Theory (≤ 15 min of reading) → an experiment on real data → 3–5 questions → "explain it in your own words".
-- Then 10–15 min "Chiron's lab": first 5 min to decode the Monday lab item with the user (`curriculum/glossary.md`),
+- Then 10–15 min "Chiron's lab": first 5 min to decode the last Monday lab item, if there is one, with the user (`curriculum/glossary.md`),
   then one real journal entry and the concept it shows (its `concepts:` line).
 - In a [hands-on] week the user writes the code. Review it and give hints; never write it for them, even if they
   ask. In the other weeks the user explains the topic in their own words.
